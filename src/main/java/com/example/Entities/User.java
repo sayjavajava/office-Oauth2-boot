@@ -20,11 +20,26 @@ public class User {
     @Column
     private int age;
 
+    @Column
+    private String email;
+
+
+
     public User(){}
 
     public long getId() {
         return id;
     }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+
 
     public void setId(long id) {
         this.id = id;

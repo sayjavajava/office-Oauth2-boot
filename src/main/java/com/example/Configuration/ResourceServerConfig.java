@@ -26,10 +26,13 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .authorizeRequests()
 
 		        .antMatchers("/api/oauth/token").permitAll()
-                .antMatchers("/users/**").access("hasRole('ADMIN')")
-				.antMatchers("/api/product").access("hasRole('ADMIN')")
+			 	.antMatchers("/api/logout").permitAll()
+				.antMatchers("/api").access("hasRole('ADMIN')")
+                .antMatchers("/user/**").access("hasRole('ADMIN')")
+				.antMatchers("/users/**").access("hasRole('ADMIN')")
+				.antMatchers("/product/**").access("hasRole('ADMIN')")
 
-			//	.anyRequest().authenticated()
+				//.anyRequest().authenticated()
                 .and().exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler());
 	}
 

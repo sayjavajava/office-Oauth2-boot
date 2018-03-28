@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 
 @Service(value ="userService")
@@ -33,14 +35,15 @@ public class UserService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("Invalid username or password.");
         }
-        String role =user.getAuthorities().stream().map(x->x.getName()).toString();
-        logger.info("loadd:" + userId +"roles:"+ role);
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), getAuthority());
+
+      //  logger.info("loadd:" + userId +"roles:"+ role);
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), getAuthority(user.getAuthorities()));
     }
 
-    private List<SimpleGrantedAuthority> getAuthority() {
-
-        return Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN"));
+    private List<SimpleGrantedAuthority> getAuthority(List<Authority> authlist) {
+         return  authlist.stream()
+                     .map(x->new SimpleGrantedAuthority(x.getName()))
+                     .collect(Collectors.toList());
     }
 
     public List<User> findAll() {
