@@ -1,6 +1,7 @@
 package com.example.Controller;
 
 import com.example.Entities.Authority;
+import com.example.Entities.Permission;
 import com.example.Entities.User;
 import com.example.Services.UserService;
 import org.slf4j.Logger;
@@ -41,6 +42,9 @@ public class UserController {
         List<Authority>  list= userService.findById(1);
         user.setPassword(bycrptpasswordencoder.encode(user.getPassword()));
         user.setAuthorities(list);
+
+        logger.info("teting:"+ user.getAddress().getCity());
+
         userService.save(user);
      return user;
     }
@@ -72,7 +76,14 @@ public class UserController {
     public List<Authority> listRoles(){
         return userService.allRoles();
     }
-
+    @PostMapping ("/addroles")
+    public void saveRole(@RequestBody Authority name){
+        userService.saveRole(name);
+    }
+    @PostMapping ("/addpermissions")
+    public void savePersmission(@RequestBody Permission permission){
+        userService.savePermissions(permission);
+    }
 
 
 }

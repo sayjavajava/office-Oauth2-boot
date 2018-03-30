@@ -1,6 +1,8 @@
 package com.example.Services;
 
+import com.example.Entities.Permission;
 import com.example.Repositories.AuthorityRepo;
+import com.example.Repositories.PermissionRepo;
 import com.example.Repositories.UserDao;
 import com.example.Entities.Authority;
 import com.example.Entities.User;
@@ -23,11 +25,21 @@ import java.util.stream.Collectors;
 @Service(value ="userService")
 public class UserService implements UserDetailsService {
 
-    @Autowired
+
     private UserDao userDao;
 
-    @Autowired
+
     private AuthorityRepo authorityRepo;
+
+
+    private PermissionRepo permissionRepo;
+
+
+    UserService(UserDao userDao,AuthorityRepo authorityRepo,PermissionRepo permissionRepo){
+        this.authorityRepo=authorityRepo;
+        this.permissionRepo=permissionRepo;
+        this.userDao=userDao;
+    }
 
     private final Logger logger = LoggerFactory.getLogger(UserService.class);
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
@@ -80,4 +92,13 @@ public class UserService implements UserDetailsService {
 	public List<Authority> allRoles(){
         return authorityRepo.findAll();
     }
+
+    public void saveRole(Authority role){
+
+	     authorityRepo.save(role);
+    }
+    public void savePermissions(Permission permission){
+        permissionRepo.save(permission);
+    }
+
 }

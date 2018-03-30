@@ -1,6 +1,7 @@
 package com.example.Entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.List;
@@ -25,7 +26,21 @@ public class User {
 
 
 
+
+
     public User(){}
+
+    public User(String username, String password, long salary, int age, String email, boolean active, List<Authority> authorities, Address address) {
+        this.username = username;
+        this.password = password;
+        this.salary = salary;
+        this.age = age;
+        this.email = email;
+
+        this.authorities = authorities;
+        this.address = address;
+    }
+
 
     public long getId() {
         return id;
@@ -82,6 +97,18 @@ public class User {
             joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")},
             inverseJoinColumns = {@JoinColumn(name = "AUTHORITY_ID", referencedColumnName = "ID")})
     private List<Authority> authorities;
+
+    @OneToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name = "address_id")
+    private Address address;
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 
     public List<Authority> getAuthorities() {
         return authorities;

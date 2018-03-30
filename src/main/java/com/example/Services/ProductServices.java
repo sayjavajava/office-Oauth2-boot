@@ -26,7 +26,7 @@ public class ProductServices {
     }
     public Product DeleteProduct(int id ){
 
-            Product product = findOne(id);
+        Product product = findOne(id);
         if(product !=null) {
             productRepo.delete(product);}
         return product;

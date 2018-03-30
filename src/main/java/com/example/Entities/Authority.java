@@ -25,6 +25,12 @@ public class Authority implements Serializable {
     private List<User> users;
 
 
+    @ManyToMany
+    @JoinTable(
+            name="authority_permission",
+            joinColumns={@JoinColumn(name="Auth_ID", referencedColumnName="ID")},
+            inverseJoinColumns={@JoinColumn(name="PERM_ID", referencedColumnName="ID")})
+    private List<Permission> permissions;
     public Authority(){}
 
     public Integer getId() {
