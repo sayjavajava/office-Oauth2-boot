@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
@@ -20,10 +21,15 @@ public class Authority implements Serializable {
     @NotNull
     private String name;
 
-    @ManyToMany(mappedBy = "authorities", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "authorities")
     @JsonBackReference
     private List<User> users;
 
+    public Authority(String name, List<User> users, List<Permission> permissions) {
+        this.name = name;
+        this.users = users;
+        this.permissions = permissions;
+    }
 
     @ManyToMany
     @JoinTable(
@@ -55,5 +61,13 @@ public class Authority implements Serializable {
 
     public void setUsers(List<User> users) {
         this.users = users;
+    }
+
+    public List<Permission> getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(List<Permission> permissions) {
+        this.permissions = permissions;
     }
 }
